@@ -56,5 +56,34 @@ Soit D(z) le polynome caracteristique au dénominateur de H(z) :
 
 \[\Leftrightarrow 2z^2 + z(KT_e(2+T_e) - 4) + KT_e(T_e - 2) +2 = 0 \]
 
+\[\Delta = [(KT_e(2 + T_e)-4)]^2 - 8[KT_e(T_e -2) +2] = KT_e^2[K(2+T_e)^2 - 16] \]
+
+pour $\Delta = 0$ on a : 
+\[K_0 = 0 \text{ et } K = \frac{16}{(2+T_e)^2}\]
+\section{}
+Le systeme est stable si les poles de la fonction de transfert $H(z)$ autrement dit les racines de $D(z)$ ont un module strictement inferieur a 1.
+\break
+Les modules des 2 racines sont compris entre 0 et 1 pour $0<K<20$.
+\section{}
+Les conditions de stabilite d'apres le critere de Jury sont :
+\begin{itemize}
+    \item $D(1) = 2KT_e^2 > 0 \Leftrightarrow K > 0$
+    \item $D(-1) = 8-4KT_e>0 \Leftrightarrow K<2/T_e = 2/0.1 = 20$
+\end{itemize}
+D'ou $0<K<20$.
+
+\section{}
+G(z) contient deux integrateurs dans son expression, on peut donc en deduire les resultats suivants :
+\begin{itemize}
+    \item \[\epsilon_p = \lim_{z\to1} \frac{1}{1+KG(z)} = 0\]
+    \item \[\epsilon_v = \lim_{z\to1} \frac{z-1}{z} \times \frac{1}{1+KG(z)} = 0\]
+\end{itemize}
+Le systeme est donc precis pour tout K.
+
+\section{}
+\[{S(Z)} = H(Z)E(Z) \]
+\[\Leftrightarrow S(z) = \frac{z^{-1}KT_e(2+T_e) + z^{-2}KT_e(T_e-2) }{2+z^{-1}[(KT_e(2+T_e) - 4)] + z^{-2} [KT_e(T_e-2) +2]} E(Z)\]
+\[\Leftrightarrow (2+z^{-1}[(KT_e(2+T_e) - 4)] + z^{-2} [KT_e(T_e-2) +2])S(z)\]  \[= (z^{-1}KT_e(2+T_e) + z^{-2}KT_e(T_e-2))E(z)\] 
+\[\Leftrightarrow s_k = \frac{1}{2} [KT_e(2+T_e)e_{k-1} + KT_e(T_e - 2)e_{k-2} - ((KT_e(2+T_e)-4))s_{k-1} \] \[ - (KT_e(T_e-2)+2)s_{k-2}]\]
 \end{document}
 	
