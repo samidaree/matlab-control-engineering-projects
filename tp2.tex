@@ -20,7 +20,7 @@
 \usepackage{graphicx}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 
-\title{TP2 Automatique}
+\title{TP2 Automatique - Sami BOUFASSA}
 
 \begin{document}
 \maketitle
@@ -43,10 +43,21 @@ Dans le domaine temporel, on a :
 
 \[A(z) = TZ[\frac{t^2}{2}u(t) + tu(t)] = \frac{z(z+1)T_{e}^2}{2(z-1)^3} + \frac{zT_e}{(z-1)^2} = \frac{z(z+1)T_e^2+2z(z-1)T_e}{2(z-1)^3}\] 
 \[G(z)= (1-z^{-1})A(z) = \frac{T_e(z(2+T_e)+T_e -2)}{2(z-1)^2}\]
-
+\break
 \section{}
 
-\includegraphics{untitled.jpg}
+
+\begin{figure}[tbh]
+\vspace{0.1cm}
+    \centering
+    \includegraphics[width=\columnwidth]{tp2_3.png}
+    \includegraphics[width=\columnwidth]{tp2_3b.png}
+
+\end{figure}
+
+
+
+L'intervale de trace choisi n'est pas compatible avec l'intervale de trace de des spectres de fonction de transfert en z car elles sont periodiques et pairs, il suffit donc de choisir un intervalle de trace de 0 a $\pi$. 
 
 \section{}
 \[H(z) = \frac{C(z)G(z)}{1+C(z)G(z)} = \frac{KT_e(z(2+T_e) + T_e - 2)}{2(z-1)^2 + KT_e(z(2+T_e)+T_e - 2)}\] 
@@ -59,18 +70,24 @@ Soit D(z) le polynome caracteristique au dénominateur de H(z) :
 \[\Delta = [(KT_e(2 + T_e)-4)]^2 - 8[KT_e(T_e -2) +2] = KT_e^2[K(2+T_e)^2 - 16] \]
 
 pour $\Delta = 0$ on a : 
-\[K_0 = 0 \text{ et } K = \frac{16}{(2+T_e)^2}\]
+\[K_0 = 0 \text{ et } K_c = \frac{16}{(2+T_e)^2}\]
 \section{}
+\begin{figure}[tbh]
+\vspace{0.1cm}
+    \centering
+    \includegraphics[width=\columnwidth]{tp2_5.png}
+    \label{fig:alrc2}
+    \footnotesize
+    \vspace{\baselineskip}
+\end{figure}
+
+
 Le systeme est stable si les poles de la fonction de transfert $H(z)$ autrement dit les racines de $D(z)$ ont un module strictement inferieur a 1.
 \break
-Les modules des 2 racines sont compris entre 0 et 1 pour $0<K<20$.
+Les modules des 2 racines sont compris entre 0 et 1 pour $0<K<=11$.
 \section{}
 Les conditions de stabilite d'apres le critere de Jury sont :
-\begin{itemize}
-    \item $D(1) = 2KT_e^2 > 0 \Leftrightarrow K > 0$
-    \item $D(-1) = 8-4KT_e>0 \Leftrightarrow K<2/T_e = 2/0.1 = 20$
-\end{itemize}
-D'ou $0<K<20$.
+
 
 \section{}
 G(z) contient deux integrateurs dans son expression, on peut donc en deduire les resultats suivants :
@@ -85,5 +102,77 @@ Le systeme est donc precis pour tout K.
 \[\Leftrightarrow S(z) = \frac{z^{-1}KT_e(2+T_e) + z^{-2}KT_e(T_e-2) }{2+z^{-1}[(KT_e(2+T_e) - 4)] + z^{-2} [KT_e(T_e-2) +2]} E(Z)\]
 \[\Leftrightarrow (2+z^{-1}[(KT_e(2+T_e) - 4)] + z^{-2} [KT_e(T_e-2) +2])S(z)\]  \[= (z^{-1}KT_e(2+T_e) + z^{-2}KT_e(T_e-2))E(z)\] 
 \[\Leftrightarrow s_k = \frac{1}{2} [KT_e(2+T_e)e_{k-1} + KT_e(T_e - 2)e_{k-2} - ((KT_e(2+T_e)-4))s_{k-1} \] \[ - (KT_e(T_e-2)+2)s_{k-2}]\]
+
+\break
+\section{
+}
+
+\begin{figure}[tbh]
+\vspace{0.1cm}
+    \centering
+    \includegraphics[width=\columnwidth]{tp2_9.png}
+    \footnotesize
+    \vspace{\baselineskip}
+\end{figure}
+
+
+Pour K = 4, le depassement est nul. 
+On determine graphiquement le temps de montee : $t_m = 9s$.
+\section{}
+On a $U(z) = C(z)\epsilon(z) = C(z)(E(z)-S(z)) = K(E(z)-S(z))$
+Donc $u_k = K * (e_k – s_k)$
+\begin{figure}[tbh]
+\vspace{0.1cm}
+    \centering
+    \includegraphics[width=\columnwidth]{tp2_10png.png}
+    \footnotesize
+    \vspace{\baselineskip}
+\end{figure}
+
+\section{}
+
+Reponse a une rampe d'increment unitaire : 
+\begin{figure}[tbh]
+\vspace{0.1cm}
+    \centering
+    \includegraphics[width=\columnwidth]{tp2_11png.png}
+    \footnotesize
+    \vspace{\baselineskip}
+\end{figure}
+
+\section{}
+
+\section{}
+\begin{figure}[tbh]
+\vspace{0.1cm}
+    \centering
+    \includegraphics[width=\columnwidth]{tp2_13.png}
+    \footnotesize
+    \vspace{\baselineskip}
+\end{figure}
+Graphiquement, le temps de montee est environ 1.9 s et le depassement est nul.
+\break
+
+
+\section{}
+\begin{figure}[tbh]
+\vspace{0.1cm}
+    \centering
+    \includegraphics[width=\columnwidth]{tp2_14.png}
+    \footnotesize
+    \vspace{\baselineskip}
+\end{figure}
+
+\break
+\section{}
+\begin{figure}[tbh]
+\vspace{0.1cm}
+    \centering
+    \includegraphics[width=\columnwidth]{tp2_15.png}
+    \footnotesize
+    \vspace{\baselineskip}
+\end{figure}
+
+
 \end{document}
 	

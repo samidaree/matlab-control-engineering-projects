@@ -1,97 +1,50 @@
-clear all;
-close all ;
-clc ;
+% Paramètres du système
+Te = 0.1;            % Pas d'échantillonnage en secondes
+T_total = 10;        % Durée totale d'observation (en secondes)
 
-f=logspace(-4,4) * 20 ;
-W = 2*pi*f;
-p = j*W;
-Gp = (1+p) ./ (p.*p);
-semilogx(f,Gp);
-% semilogx(f,20*log10(abs(Gp)));
-% discret
-fe = 100;
-Te = 1/fe;
-z =exp(p*Te);
-%Gz = 10*Te^2./(z.^(-2) - (10*Te+2)*z.^(-1) + 10*Te+1);
+% Valeurs de K
+K_values = [16/(2+Te)^2];  % Valeurs de K à tester (modifié à K = 20 et K = 40)
+labels = {'K = 20', 'K = 40'};  % Légendes pour les courbes
 
-Gz = Te.*(z.*(2+Te)+Te-2)./2.*(z-1).^2;
-hold on ; %superposer les courbes
-semilogx(f,Gz,'or');
-% semilogx(f,20*log10(abs(Gz)),'or');
-grid
-xlabel('f(Hz)');
-ylabel('G(dB)');
-title('G(f)');
+N = T_total / Te;    % Nombre d'échantillons
+e_k = ones(1, N);    % Signal échelon d'amplitude unité (entrée)
+s_k = zeros(2, N);   % Initialisation de la sortie s_k pour 2 valeurs de K
+s_k_1 = zeros(1, 2); % Valeurs de s(k-1) pour chaque K
+s_k_2 = zeros(1, 2); % Valeurs de s(k-2) pour chaque K
+e_k_1 = 1;           % e(k-1) (signal échelon)
+e_k_2 = 1;           % e(k-2) (signal échelon)
 
-% ex5
-K = 0:0.1:100;
-Te= 0.1 ;
-b = (K.*Te).*((2+Te)-4)
-delta = (K.*Te.^2).*(K.*((2+Te).^2) - 16)
-r1 = abs((-b + sqrt(delta))./(4))
-r2 = abs((-b - sqrt(delta))./(4))
-% Plot r1 and r2 against K
-figure;  % Create a new figure
-plot(K, r1, 'b-', 'DisplayName', 'r1');  % Plot r1 in blue
-hold on;  % Hold the current plot
-plot(K, r2, 'r-', 'DisplayName', 'r2');  % Plot r2 in red
-hold off;  % Release the hold
+% Vecteur de temps
+t = (0:N-1) * Te;    % Temps pour chaque échantillon
 
-% Add labels and title
-xlabel('K');  % Label for the x-axis
-ylabel('r1 and r2');  % Label for the y-axis
-title('Plot of r1 and r2 against K');  % Title of the plot
-legend show;  % Show legend
+% Calcul de la sortie s_k en fonction de l'entrée e_k pour chaque K
+for j = 1  % Parcourir les 2 valeurs de K
+    K = K_values(j);  % Sélectionner la valeur de K
+    for k = 3:N
+        s_k(j, k) = 0.5 * (K * Te * (2 + Te) * e_k(k-1) + K * Te * (Te - 2) * e_k(k-2) ...
+            - (K * Te * (2 + Te) - 4) * s_k_1(j) - (K * Te * (Te - 2) + 2) * s_k_2(j));
+
+        % Mise à jour des valeurs précédentes pour s_k et e_k
+        s_k_2(j) = s_k_1(j);
+        s_k_1(j) = s_k(j, k);
+        e_k_2 = e_k_1;
+        e_k_1 = e_k(k);
+    end
+end
+
+% Créer la figure avec deux sous-graphes
+figure;
+
+% Premier sous-graphe pour K = 20
+plot(t, s_k(1,:), 'LineWidth', 1.5); % Réponse s_k pour K = 20
+xlabel('Temps (s)');
+ylabel('Amplitude');
+title('Réponse indicielle pour K = Kc');
 grid on;
+axis([0 10 0 1.4]);        % Limites : [xmin xmax ymin ymax]
+yticks = 0:0.2:1.4;        % Définition des graduations de l'axe des ordonnées
+set(gca, 'ytick', yticks); % Appliquer les graduations à l'axe des ordonnées
 
-%9
-% nombre d'echantillons N = T / Te+1 = 10/0.1+1 = 101
+% Appliquer les graduations à l'axe des ordonnées
 
-N =101
-% a la periode -Te toutes les sorties sont nulles
-Te = 0.1;
-K = 2;
-s = zeros(1,N);
-e = ones (1,N);
-
-%initialisation
-s(1) = 0.2;
-%s(2) = (1/2) *(((K*Te)*(2+Te)*e(1)) - (((K*Te)*(2+Te)-4)*s(1)));
-s(2) = 0.39
-for k=3:N
-    s(k) = (1/2)*(((K*Te)*(2+Te)*e(k-1)) + ((K*Te)*(Te-2)*e(k-2)) - (((K*Te)*(2+Te)-4)*s(k-1)) - (((K*Te)*(Te-2)+2)*s(k-2)));
-end
-
-%affichage
-stem(s)
-hold on
-stem(e)
-xlabel("Temps [unite de Te]")
-ylabel("s[k]")
-title("101 premiers echantillons de s")
-
-%11
-% nombre d'echantillons N = T / Te+1 = 10/0.1+1 = 101
-
-N =101
-% a la periode -Te toutes les sorties sont nulles
-Te = 0.1;
-K = 2;
-s = zeros(1,N);
-e = 0:N-1;
-
-%initialisation
-s(1) = 0.2;
-%s(2) = (1/2) *(((K*Te)*(2+Te)*e(1)) - (((K*Te)*(2+Te)-4)*s(1)));
-s(2) = 0.39
-for k=3:N
-    s(k) = (1/2)*(((K*Te)*(2+Te)*e(k-1)) + ((K*Te)*(Te-2)*e(k-2)) - (((K*Te)*(2+Te)-4)*s(k-1)) - (((K*Te)*(Te-2)+2)*s(k-2)));
-end
-
-%affichage
-stem(s)
-hold on
-stem(e)
-xlabel("Temps [unite de Te]")
-ylabel("s[k]")
-title("101 premiers echantillons de s")
+% Ajuster la figure pour la meilleure présentation
